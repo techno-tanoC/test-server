@@ -2,6 +2,7 @@ package main
 
 import (
 	"io/ioutil"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,6 +25,19 @@ func main() {
 		} else {
 			c.JSON(200, gin.H{
 				"message": string(bs),
+			})
+		}
+	})
+
+	r.GET("/env", func(c *gin.Context) {
+		val, ok := os.LookupEnv("SOMETHING")
+		if !ok {
+			c.JSON(500, gin.H{
+				"error": "Env SOMETHING not found",
+			})
+		} else {
+			c.JSON(200, gin.H{
+				"message": val,
 			})
 		}
 	})
